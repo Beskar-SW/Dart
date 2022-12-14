@@ -7,12 +7,14 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  static const String _title = 'Adding two numbers';
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    //print(getFullName('Foo', 'Bar'));
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false, //Puts out the debug badge
+      title: _title,
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -25,13 +27,13 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: _title),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key, required this.title});  
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -49,27 +51,24 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final _input1 = TextEditingController();
+  final _input2 = TextEditingController();
+  //final _sum = TextEditingController();
+  //int _counter=0;
 
-  void _incrementCounter() {
+  var result = '';
+  
+  void _addingNumbers() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      double sum = double.parse(_input1.text) + double.parse(_input2.text);
+      result = sum.toString();
+      //print(sum);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    //double sum = 0;
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -77,37 +76,46 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'You have pushed the button this many times:',
+              'Insert two numbers',
+            ),
+            TextField(
+              controller: _input1,
+              decoration: const InputDecoration(
+                //hintText: 'Insert a number',
+                labelText: 'Insert a number',
+                //onPressed: hintText = '',
+              ),
+              keyboardType: TextInputType.number,
+              /*validator: (int? value){
+                if(_input1 == null || _input1.isEmpty){
+                  return 'Please enter a number';
+                }
+                return null;
+              }, */
+            ),
+            TextField(
+              controller: _input2,
+              decoration: const InputDecoration(
+                labelText: 'Insert a number',
+              ),
+              keyboardType: TextInputType.number,
             ),
             Text(
-              '$_counter',
+              'Result:\n$result',
+              //'$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
           ],
         ),
       ),
+     
+      
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: _addingNumbers,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
